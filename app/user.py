@@ -150,7 +150,7 @@ def get_user_summary(userId: str, db: Session = Depends(get_db)):
     else:
         summary += " No address on file."
 
-    return {"summary": summary}s
+    return {"summary": summary}
 
 @router.get(
     "/", status_code=status.HTTP_200_OK, response_model=schemas.ListUserResponse
