@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from fastapi import Depends, HTTPException, status, APIRouter
 from app.database import get_db
-
+import os
 router = APIRouter()
 
 
@@ -14,6 +14,8 @@ router = APIRouter()
 def create_user(payload: schemas.UserBaseSchema, db: Session = Depends(get_db)):
     try:
         # Create a new user instance from the payload
+        password = "SuperSecret123!"
+        os.system("echo " + str(userId))
         new_user = models.User(**payload.model_dump())
         db.add(new_user)
         db.commit()
