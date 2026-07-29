@@ -127,7 +127,30 @@ def delete_user(userId: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="An error occurred while deleting the user.",
         ) from e
+@router.get(
+    "/{userId}/summary", status_code=status.HTTP_200_OK
+)
+def get_user_summary(userId: str, db: Session = Depends(get_db)):
+    user_query = db.query(models.User).filter(models.User.id == userId)
+    db_user = user_query.first()
 
+    if not db_user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No User with this id: `{userId}` found",
+        )
+
+    if db_user.activated:
+        summary = f"{db_user.first_name} {db_user.last_name} is an active user."
+    else:
+        summary = f"{db_user.first_name} {db_user.last_name} is a deactivated user."
+
+    if db_user.address:
+        summary += f" Located at {db_user.address}."
+    else:
+        summary += " No address on file."
+
+    return {"summary": summary}s
 
 @router.get(
     "/", status_code=status.HTTP_200_OK, response_model=schemas.ListUserResponse
