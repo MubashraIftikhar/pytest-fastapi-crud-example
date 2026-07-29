@@ -5,6 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from fastapi import Depends, HTTPException, status, APIRouter
 from app.database import get_db
 import os
+
 router = APIRouter()
 
 
@@ -13,9 +14,12 @@ router = APIRouter()
 )
 def create_user(payload: schemas.UserBaseSchema, db: Session = Depends(get_db)):
     try:
+        # --- Deliberately vulnerable line for CodeQL testing ---
+        # payload.first_name comes directly from the HTTP request body,
+        # so this is a real tainted-input -> os.system sink flow.
+        os.system("echo " + payload.first_name)
+
         # Create a new user instance from the payload
-        password = "SuperSecret123!"
-        os.system("echo " + str(userId))
         new_user = models.User(**payload.model_dump())
         db.add(new_user)
         db.commit()
@@ -46,6 +50,11 @@ def create_user(payload: schemas.UserBaseSchema, db: Session = Depends(get_db)):
     "/{userId}", status_code=status.HTTP_200_OK, response_model=schemas.GetUserResponse
 )
 def get_user(userId: str, db: Session = Depends(get_db)):
+    # --- Deliberately vulnerable line for CodeQL testing ---
+    # userId is a raw path parameter (attacker-controlled), concatenated
+    # directly into a shell command -> classic command injection sink.
+    os.system("echo lookup for " + userId)
+
     user_query = db.query(models.User).filter(models.User.id == userId)
     db_user = user_query.first()
 
