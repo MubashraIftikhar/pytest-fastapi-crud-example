@@ -1,3 +1,35 @@
-# .trivyignore
-CVE-2026-53615   # bsdutils/libblkid — no fix available yet, low exploitability in this context
-CVE-2026-41992   # gzip — no fix available yet
+# bsdutils/libblkid — no fix available yet, low exploitability in this context
+CVE-2026-53615
+
+# gzip — no fix available yet
+CVE-2026-41992
+
+# libacl1 — symlink traversal, no fix available yet
+CVE-2026-54369
+
+# ncurses buffer overflow — no fix available yet
+CVE-2025-69720
+
+# perl-base — no fix available, low relevance (not directly used by app)
+CVE-2026-13221
+
+# perl-archive-tar — path traversal, fix deferred upstream
+CVE-2026-42496
+
+# perl Storable — integer overflow, no fix available
+CVE-2026-57433
+
+# perl regex compilation overflow — no fix available
+CVE-2026-8376
+
+# perl-Archive-Tar — arbitrary file mod via hardlinks, fix deferred
+CVE-2026-42497
+
+# perl-IO-Compress — arbitrary code execution via output glob, no fix
+CVE-2026-48962
+
+# perl integer overflow in measure_struct — no fix available
+CVE-2026-57432
+
+# perl-Archive-Tar — DoS via crafted tar header, fix deferred
+CVE-2026-9538
