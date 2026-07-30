@@ -1,0 +1,3 @@
+# .trivyignore
+CVE-2026-53615   # bsdutils/libblkid — no fix available yet, low exploitability in this context
+CVE-2026-41992   # gzip — no fix available yet
